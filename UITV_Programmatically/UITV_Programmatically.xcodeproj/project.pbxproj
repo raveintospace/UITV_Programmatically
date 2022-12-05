@@ -12,6 +12,7 @@
 		3417457A293D0C28000A92FA /* AmiiboListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34174579293D0C28000A92FA /* AmiiboListVC.swift */; };
 		3417457F293D0C2B000A92FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3417457E293D0C2B000A92FA /* Assets.xcassets */; };
 		34174582293D0C2B000A92FA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34174580293D0C2B000A92FA /* LaunchScreen.storyboard */; };
+		34D9577E293E5F7F002FD826 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D9577D293E5F7F002FD826 /* Model.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		3417457E293D0C2B000A92FA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		34174581293D0C2B000A92FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		34174583293D0C2B000A92FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		34D9577D293E5F7F002FD826 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 			children = (
 				34174575293D0C28000A92FA /* AppDelegate.swift */,
 				34174577293D0C28000A92FA /* SceneDelegate.swift */,
+				34D9577D293E5F7F002FD826 /* Model.swift */,
 				34174579293D0C28000A92FA /* AmiiboListVC.swift */,
 				3417457E293D0C2B000A92FA /* Assets.xcassets */,
 				34174580293D0C2B000A92FA /* LaunchScreen.storyboard */,
@@ -137,6 +140,7 @@
 				3417457A293D0C28000A92FA /* AmiiboListVC.swift in Sources */,
 				34174576293D0C28000A92FA /* AppDelegate.swift in Sources */,
 				34174578293D0C28000A92FA /* SceneDelegate.swift in Sources */,
+				34D9577E293E5F7F002FD826 /* Model.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

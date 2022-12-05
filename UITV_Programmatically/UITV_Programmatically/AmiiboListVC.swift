@@ -10,6 +10,7 @@ import UIKit
 class AmiiboListVC: UIViewController {
     let tableView = UITableView()
     var safeArea: UILayoutGuide!
+    var amiiboList = [Amiibo]()
     
     override func viewDidLoad() {
         view.backgroundColor = .orange
@@ -23,6 +24,7 @@ class AmiiboListVC: UIViewController {
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellId")
         setupView()
+        loadDataFromJsonToVC()
     }
     
     func setupView() {
@@ -34,22 +36,33 @@ class AmiiboListVC: UIViewController {
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
+    
+    func loadDataFromJsonToVC() {
+        let anonymousFunction = { (fetchedAmiiboList: [Amiibo]) in
+            DispatchQueue.main.async {
+                self.amiiboList = fetchedAmiiboList
+                self.tableView.reloadData()
+            }
+        }
+        AmiiboAPI.shared.fetchAmiiboList(onCompletion: anonymousFunction)
+    }
 }
 
 // MARK: - UITableViewDataSource
 
 extension AmiiboListVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 7
+        return amiiboList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath)
-        cell.textLabel?.text = "Fato"
+        let amiibo = amiiboList[indexPath.row]
+        cell.textLabel?.text = amiibo.name
         return cell
     }
 }
 
-// lesson for monday - https://youtu.be/t8sYKkST1gs
+// lesson for tuesdsay - https://www.youtube.com/watch?v=_7eJHVpt_cs
 
 
