@@ -22,12 +22,13 @@ class AmiiboListVC: UIViewController {
     func setup() {
         safeArea = view.layoutMarginsGuide
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellId")
-        setupView()
+        tableView.delegate = self
+        tableView.register(AmiiboCell.self, forCellReuseIdentifier: "cellId")
+        setupTableView()
         loadDataFromJsonToVC()
     }
     
-    func setupView() {
+    func setupTableView() {
         view.addSubview(tableView)  // always add the view before setting its constraints
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -58,11 +59,33 @@ extension AmiiboListVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath)
         let amiibo = amiiboList[indexPath.row]
-        cell.textLabel?.text = amiibo.name
+        
+        guard let amiiboCell = cell as? AmiiboCell else { return cell }
+        amiiboCell.nameLabel.text = amiibo.name
+        amiiboCell.gameSeriesLabel.text = amiibo.gameSeries
+        
+        if let url = URL(string: amiibo.image) {
+            amiiboCell.imageIV.loadImage(from: url)
+        }
         return cell
     }
 }
 
-// lesson for tuesdsay - https://www.youtube.com/watch?v=_7eJHVpt_cs
+// MARK: - UITableViewDelegate  - https://youtu.be/jbFLBBc4TNY
+
+extension AmiiboListVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completionHandler) in
+        
+        self.amiiboList.remove(at: indexPath.row)
+        self.tableView.deleteRows(at: [indexPath], with: .automatic)
+        
+        completionHandler(true)
+    }
+        
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+}
 
 
