@@ -12,6 +12,7 @@ class AmiiboCell: UITableViewCell {
     let imageIV = CustomImageView()     // Our custom image view
     let nameLabel = UILabel()
     let gameSeriesLabel = UILabel()
+    let countLabel = UILabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -26,16 +27,25 @@ class AmiiboCell: UITableViewCell {
     
     func setupView() {
         safeArea = layoutMarginsGuide
+        setupCountLabel()
         setupImageView()
-        setupLabel()
+        setupNameLabel()
         setupGameSeriesLabel()
+    }
+    
+    func setupCountLabel() {
+        addSubview(countLabel)
+        
+        countLabel.translatesAutoresizingMaskIntoConstraints = false
+        countLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor).isActive = true
+        countLabel.centerYAnchor.constraint(equalTo: safeArea.centerYAnchor).isActive = true
     }
     
     func setupImageView() {
         addSubview(imageIV)
         
         imageIV.translatesAutoresizingMaskIntoConstraints = false
-        imageIV.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor).isActive = true
+        imageIV.leadingAnchor.constraint(equalTo: countLabel.trailingAnchor, constant: 5).isActive = true
         imageIV.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         imageIV.widthAnchor.constraint(equalToConstant: 40).isActive = true
         imageIV.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -43,7 +53,7 @@ class AmiiboCell: UITableViewCell {
         imageIV.contentMode = .scaleAspectFit
     }
     
-    func setupLabel() {
+    func setupNameLabel() {
         addSubview(nameLabel)
         
         nameLabel.translatesAutoresizingMaskIntoConstraints = false

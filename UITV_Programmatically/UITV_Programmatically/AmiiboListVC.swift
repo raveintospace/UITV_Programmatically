@@ -10,10 +10,10 @@ import UIKit
 class AmiiboListVC: UIViewController {
     let tableView = UITableView()
     var safeArea: UILayoutGuide!
-    var amiiboList = [Amiibo]()
+    var amiiboList = [AmiiboForView]()
     
     override func viewDidLoad() {
-        view.backgroundColor = .orange
+        view.backgroundColor = .white
         setup()
     }
     
@@ -39,9 +39,16 @@ class AmiiboListVC: UIViewController {
     }
     
     func loadDataFromJsonToVC() {
-        let anonymousFunction = { (fetchedAmiiboList: [Amiibo]) in
+        let anonymousFunction = { (fetchedAmiiboList: [Amiibo]) in      // Amiibo comes from our json & api call
             DispatchQueue.main.async {
-                self.amiiboList = fetchedAmiiboList
+                let amiiboForViewList = fetchedAmiiboList.map { amiibo in   // convert the Amiibo to an AmiiboForView
+                    return AmiiboForView(
+                        name: amiibo.name,
+                        gameSeries: amiibo.gameSeries,
+                        imageUrl: amiibo.image,
+                        count: 0)
+                }
+                self.amiiboList = amiiboForViewList
                 self.tableView.reloadData()
             }
         }
@@ -63,8 +70,9 @@ extension AmiiboListVC: UITableViewDataSource {
         guard let amiiboCell = cell as? AmiiboCell else { return cell }
         amiiboCell.nameLabel.text = amiibo.name
         amiiboCell.gameSeriesLabel.text = amiibo.gameSeries
+        amiiboCell.countLabel.text = String(amiibo.count)
         
-        if let url = URL(string: amiibo.image) {
+        if let url = URL(string: amiibo.imageUrl) {
             amiiboCell.imageIV.loadImage(from: url)
         }
         return cell
@@ -77,14 +85,37 @@ extension AmiiboListVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completionHandler) in
-        
-        self.amiiboList.remove(at: indexPath.row)
-        self.tableView.deleteRows(at: [indexPath], with: .automatic)
-        
-        completionHandler(true)
-    }
+            
+            self.amiiboList.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            
+            completionHandler(true)
+        }
         
         return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let countAction = UIContextualAction(style: .normal, title: "Count up") { (action, view, completionHandler) in
+            
+            let currentCount = self.amiiboList[indexPath.row].count
+            self.amiiboList[indexPath.row].count = currentCount + 1
+            
+            if let cell = self.tableView.cellForRow(at: indexPath) as? AmiiboCell {
+                cell.countLabel.text = String(self.amiiboList[indexPath.row].count)
+            }
+            completionHandler(true)
+        }
+        
+        return UISwipeActionsConfiguration(actions: [countAction])
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedAmiibo = self.amiiboList[indexPath.row]
+        let amiiboDetailVC = AmiiboDetailVC()
+        amiiboDetailVC.amiibo = selectedAmiibo
+        self.present(amiiboDetailVC, animated: true)
     }
 }
 
